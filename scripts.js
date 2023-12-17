@@ -10,27 +10,30 @@ window.onload = function() {
 }
 
 function setGame() {
+
+
+
+
     board = [
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]
+        [2, 2, 2, 2],
+        [2, 2, 2, 2],
+        [4, 4, 8, 8],
+        [4, 4, 8, 8]
     ]
 
-    // board = [
-    //     [2, 2, 2, 2],
-    //     [2, 2, 2, 2],
-    //     [4, 4, 8, 8],
-    //     [4, 4, 8, 8]
-    // ]
+    setBoard();
 
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
-            let tile = document.createElement("div");
-            tile.id = r.toString() + '-' + c.toString();
-            let num = board[r][c];
+            let tile = board[r][c];
+            // let tile = document.getElementsByClassName('field-cell');
+            // board[r][c].id = r.toString() + '-' + c.toString();
+            tile.id = `${r}-${c}`;
+            // board[r][c].id = 'html';
+            // console.log(board[r][c].id);
+            let num = tile.innerText;
             updateTile(tile, num);
-            document.getElementById("board").append(tile);
+            // document.getElementById("board").append(tile);
         }
     }
 
@@ -39,11 +42,24 @@ function setGame() {
 
 }
 
+function setBoard() {
+
+
+    let arrBoard = document.getElementsByClassName('field-cell');
+
+    board[0] = [arrBoard[0], arrBoard[1], arrBoard[2], arrBoard[3]];
+    board[1] = [arrBoard[4], arrBoard[5], arrBoard[6], arrBoard[7]];
+    board[2] = [arrBoard[8], arrBoard[9], arrBoard[10], arrBoard[11]];
+    board[3] = [arrBoard[12], arrBoard[13], arrBoard[14], arrBoard[15]];
+
+
+}
+
 function hasEmptyTile() {
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
 
-            if (board[r][c] === 0) {
+            if (board[r][c].innerText === 0) {
                 return true;
             }
         }
@@ -63,9 +79,9 @@ function setTwo() {
         let r = Math.floor(Math.random() * rows);
         let c = Math.floor(Math.random() * columns);
 
-        if(board[r][c] === 0) {
-            board[r][c] = 2;
-            let tile = document.getElementById(r.toString() + '-' + c.toString());
+        if(board[r][c].innerText === 0) {
+            board[r][c].innerText = 2;
+            let tile = document.getElementById(`${r}-${c}`);
             tile.innerText = 2;
             tile.classList.add('x2');
             found = true;
