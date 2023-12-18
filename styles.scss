@@ -10,6 +10,10 @@ body {
   font-weight: 900;
 }
 
+
+
+
+
 .field-cell {
   background: #d6cdc4;
   width: 75px;
@@ -20,6 +24,10 @@ body {
   text-align: center;
   vertical-align: center;
   user-select: none;
+
+
+
+
 
   &--2 {
     background: #eee4da;
@@ -72,6 +80,11 @@ body {
   &--2048 {
     background: #edc22e;
     color: #f9f6f2;
+  }
+
+  &--8192  {
+    background-color: #ff2020;
+    color: white;
   }
 }
 
@@ -147,6 +160,7 @@ h1 {
 }
 
 .restart {
+  font-size: 16px;
   background: #f1b2b2;
 
   &:hover {
