@@ -1,26 +1,32 @@
 'use strict'
 let board = [];
-
+const scoreTotal = document.querySelector('.game-score');
 let score = 0;
 const rows = 4;
 const columns = 4;
 const btn = document.querySelector('.button');
+const btnStart = document.querySelector('.start');
+const btnRestart = document.querySelector('.restart');
 
 btn.addEventListener('click' , () => {
-    setGame();
+        setBoard();
+        clearBoard();
+        score = 0;
+        scoreTotal.innerText = 0;
+        setGame();
+        setTwo();
+        setTwo();
         if (!btn.classList.value.includes("restart")) {
             btn.classList.add("restart");
             btn.innerHTML = 'Restart';
-        } else {
-            btn.classList.remove("restart");
-            btn.innerHTML = 'Start';
         }
     },
 );
 
+
 function setGame() {
 
-    setBoard();
+
 
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
@@ -33,8 +39,7 @@ function setGame() {
 
 
 
-    setTwo();
-    setTwo();
+
 
 }
 
@@ -47,6 +52,18 @@ function setBoard() {
     board[2] = [arrBoard[8], arrBoard[9], arrBoard[10], arrBoard[11]];
     board[3] = [arrBoard[12], arrBoard[13], arrBoard[14], arrBoard[15]];
 
+
+}
+
+
+function clearBoard() {
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns; c++) {
+
+            board[r][c].innerText = '';
+        }
+    }
+    console.log(score);
 
 }
 
@@ -142,8 +159,6 @@ document.addEventListener('keyup', (e) => {
         slideDown();
         setRandomNum2or4();
     }
-    const scoreTotal = document.querySelector('.game-score');
-    scoreTotal.innerText = score;
 })
 
 function filterZero(row) {
@@ -159,6 +174,7 @@ function slide(row) {
             row[r]*=2;
             row[r + 1] = 0;
             score += row[r];
+            scoreTotal.innerText = score;
         }
     }
     row = filterZero(row);
