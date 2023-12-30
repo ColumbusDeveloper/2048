@@ -1,6 +1,6 @@
 'use strict'
 const board = [];
-const log = [];
+const logGameOver = [];
 const scoreTotal = document.querySelector('.game-score');
 const messWin = document.querySelector('.message-win');
 const messLose = document.querySelector('.message-lose');
@@ -59,6 +59,47 @@ function clearAll() {
   messStart.style.display = 'none';
 }
 
+function areCellsEqual(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const el = arr[i];
+    if (arr[i] === arr[i + 1]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function showGameOver() {
+
+  let rowNum = [];
+  let colNum = [];
+
+  for (let r = 0; r < rows; r++) {
+    rowNum = [Number(board[r][0].innerText),
+      Number(board[r][1].innerText),
+      Number(board[r][2].innerText),
+      Number(board[r][3].innerText)
+    ];
+  }
+
+  for (let c = 0; c < columns; c++) {
+    colNum = [Number(board[0][c].innerText),
+      Number(board[1][c].innerText),
+      Number(board[2][c].innerText),
+      Number(board[3][c].innerText)
+    ];
+  }
+
+  const isMoveInRowAv = areCellsEqual(rowNum);
+  const isMoveInColAv = areCellsEqual(colNum);
+  console.log(isMoveInRowAv, isMoveInColAv, hasEmptyTile());
+  if (!isMoveInRowAv && !isMoveInColAv && !hasEmptyTile()) {
+    const loseMess = document.querySelector('.message-lose');
+    loseMess.classList.remove('hidden');
+  }
+
+}
+
 function showMessageWin() {
   setBoard();
 
@@ -69,13 +110,6 @@ function showMessageWin() {
       }
     }
   }
-}
-
-function showMessageGameOver() {
-
-    if(!hasEmptyTile()) {
-        messLose.classList.remove('hidden');
-    }
 }
 
 function hasEmptyTile() {
@@ -99,14 +133,14 @@ function setRandomNum2or4() {
 
   let stopWhile = false;
 
+
   while (!stopWhile) {
     const r = Math.floor(Math.random() * rows);
     const c = Math.floor(Math.random() * columns);
 
     if (Number(board[r][c].innerText) === 0) {
       const tile = document.getElementById(`${r}-${c}`);
-      const num = Math.random() * 1000 <= 900 ? 2 : 4;
-
+      let num = Math.random() * 1000 <= 900 ? 2 : 4;
       tile.innerText = num;
       tile.classList.add('field-cell--' + num.toString());
       stopWhile = true;
@@ -115,10 +149,6 @@ function setRandomNum2or4() {
 }
 
 function setTwo() {
-  if (!hasEmptyTile()) {
-    return;
-  }
-
   let found = false;
 
   while (!found) {
@@ -153,22 +183,22 @@ function updateTile(tile, num) {
 }
 
 document.addEventListener('keydown', (e) => {
-  if (e.code === 'ArrowLeft' && hasEmptyTile()) {
+  if (e.code === 'ArrowLeft') {
     slideLeft();
     setRandomNum2or4();
   }
 
-  if (e.code === 'ArrowRight' && hasEmptyTile()) {
+  if (e.code === 'ArrowRight') {
     slideRight();
     setRandomNum2or4();
   }
 
-  if (e.code === 'ArrowUp' && hasEmptyTile()) {
+  if (e.code === 'ArrowUp') {
     slideUp();
     setRandomNum2or4();
   }
 
-  if (e.code === 'ArrowDown' && hasEmptyTile()) {
+  if (e.code === 'ArrowDown') {
     slideDown();
     setRandomNum2or4();
   }
@@ -180,7 +210,8 @@ document.addEventListener('keydown', (e) => {
   }
 
   showMessageWin();
-  showMessageGameOver();
+
+  showGameOver();
 
 });
 
