@@ -1,6 +1,7 @@
 'use strict'
 const board = [];
-const logGameOver = [];
+let rowNum = [];
+let colNum = [];
 const scoreTotal = document.querySelector('.game-score');
 const messWin = document.querySelector('.message-win');
 const messLose = document.querySelector('.message-lose');
@@ -11,7 +12,6 @@ let score = 0;
 const rows = 4;
 const columns = 4;
 
-
 btn.addEventListener('click', () => {
   setBoard();
   clearAll();
@@ -19,9 +19,6 @@ btn.addEventListener('click', () => {
   setTwo();
   setTwo();
 });
-
-
-
 
 function setGame() {
   for (let r = 0; r < rows; r++) {
@@ -57,47 +54,47 @@ function clearAll() {
   messWin.classList.add('hidden');
   messLose.classList.add('hidden');
   messStart.style.display = 'none';
-}
-
-function areCellsEqual(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    const el = arr[i];
-    if (arr[i] === arr[i + 1]) {
-      return true;
-    }
-  }
-  return false;
+  rowNum = [];
+  colNum = [];
 }
 
 function showGameOver() {
-
-  let rowNum = [];
-  let colNum = [];
+  let isMoveInRowAv = false;
+  let isMoveInColAv = false;
 
   for (let r = 0; r < rows; r++) {
     rowNum = [Number(board[r][0].innerText),
       Number(board[r][1].innerText),
       Number(board[r][2].innerText),
-      Number(board[r][3].innerText)
+      Number(board[r][3].innerText),
     ];
+
+    for (let i = 0; i < rowNum.length; i++) {
+      if (rowNum[i] === rowNum[i + 1]) {
+        isMoveInRowAv = true;
+      }
+    }
   }
 
   for (let c = 0; c < columns; c++) {
     colNum = [Number(board[0][c].innerText),
       Number(board[1][c].innerText),
       Number(board[2][c].innerText),
-      Number(board[3][c].innerText)
+      Number(board[3][c].innerText),
     ];
+
+    for (let i = 0; i < colNum.length; i++) {
+      if (colNum[i] === colNum[i + 1]) {
+        isMoveInColAv = true;
+      }
+    }
   }
 
-  const isMoveInRowAv = areCellsEqual(rowNum);
-  const isMoveInColAv = areCellsEqual(colNum);
-  console.log(isMoveInRowAv, isMoveInColAv, hasEmptyTile());
   if (!isMoveInRowAv && !isMoveInColAv && !hasEmptyTile()) {
     const loseMess = document.querySelector('.message-lose');
+
     loseMess.classList.remove('hidden');
   }
-
 }
 
 function showMessageWin() {
@@ -133,14 +130,14 @@ function setRandomNum2or4() {
 
   let stopWhile = false;
 
-
   while (!stopWhile) {
     const r = Math.floor(Math.random() * rows);
     const c = Math.floor(Math.random() * columns);
 
     if (Number(board[r][c].innerText) === 0) {
       const tile = document.getElementById(`${r}-${c}`);
-      let num = Math.random() * 1000 <= 900 ? 2 : 4;
+      const num = Math.random() * 1000 <= 900 ? 2 : 4;
+
       tile.innerText = num;
       tile.classList.add('field-cell--' + num.toString());
       stopWhile = true;
@@ -210,9 +207,10 @@ document.addEventListener('keydown', (e) => {
   }
 
   showMessageWin();
+});
 
+document.addEventListener('keyup', () => {
   showGameOver();
-
 });
 
 function filterZero(row) {
